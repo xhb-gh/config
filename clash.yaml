@@ -1,0 +1,228 @@
+port: 7890 # HTTP(S)
+socks-port: 7891
+# mixed-port: 7892 # 同时支持 HTTP(S) 和 SOCKS5 协议
+allow-lan: true
+mode: rule  # rule, global, direct
+log-level: warning #info
+ipv6: false
+tcp-concurrent: true # tcp并发
+geodata-mode: true # mmdb或者dat, true为dat
+geodata-loader: standard
+
+clash-for-android:
+  append-system-dns: false
+  keep-alive-interval: 30 # 减少移动设备耗电问题的临时措施
+
+profile: # 缓存
+  tracing: true
+  store-selected: false # 储存API对策略组的选择, 以供下次启动时使用
+  store-fake-ip: true # 储存fakeip映射表,域名再次发生连接时, 使用原有映射地址
+
+pac:
+  enable: true
+  # File: http://localhost:7890/proxy.pac
+
+tun:
+  enable: false
+  stack: system
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:  # 劫持本机所有53端口的DNS请求，所有DNS请求都由Clash统一处理
+    - any:53
+    - tcp://any:53
+
+dns:
+  enable: true # 让Clash接管DNS查询
+  listen: 0.0.0.0:53 # 监听所有网卡的53端口，拦截本机发出的DNS请求
+  ipv6: false
+  default-nameserver: # 默认DNS服务器
+    - 8.8.8.8
+    - tls://223.5.5.5
+    - tls://223.6.6.6
+    - 1.1.1.1  # Cloudflare DNS, https://1.1.1.1/dns-query
+    - 1.0.0.1  # Cloudflare DNS, tls://1.0.0.1
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  fake-ip-filter: # 对以下域名使用正常DNS解析, 不使用 fake-ip
+    - '*.lan'
+    - '*.local'
+  nameserver:  # 主要DNS解析服务器
+    - 8.8.8.8  # 谷歌公共DNS
+    - tls://223.5.5.5 # DNS over TLS, 阿里公共DNS主服务器
+    - tls://223.6.6.6 # DNS over TLS, 阿里公共DNS备用服务器
+    - https://dns.alidns.com/dns-query # DNS over HTTPS
+    - https://doh.pub/dns-query # DNS over HTTPS, 腾讯公共DNS服务
+    
+# 专用于clash节点域名解析的 DNS 服务器，非必要配置项
+  proxy-server-nameserver: # 节点自己需要解析域名时使用
+    - tls://223.5.5.5
+    - tls://223.6.6.6
+    - https://dns.alidns.com/dns-query
+
+ # 当 nameserver 解析出的IP地址被判定为非中国大陆IP时，
+ # 会启用 fallback 机制。非必要配置项
+  fallback:
+    - "tls://1.1.1.1#🚀 节点选择"
+    - "tls://1.0.0.1#🚀 节点选择"
+    - "https://1.1.1.1/dns-query#🚀 节点选择"
+    - "https://1.0.0.1/dns-query#🚀 节点选择"
+    - "https://dns.cloudflare.com/dns-query#🚀 节点选择"
+    
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 240.0.0.0/4 #此IP段不使用fallback, 不触发fallback
+    domain: # 以下域名使用 fallback, 强制走fallback
+      - "+.dns.nextdns.io"
+      - "+.hk-hkg.doh.sb"
+      - "+.dns.cloudflare.com"
+      - "+.dns.google"
+      - "+.google.com"
+      - "+.facebook.com"
+      - "+.youtube.com"
+      - "+.githubusercontent.com"
+      - "+.netflix.com"
+      - "+.netflix.net"
+
+proxies:
+  - name: 001-美国洛杉矶
+    type: vless
+    server:
+    port:
+    uuid:
+    network: tcp
+    tls: true
+    udp: true
+    servername: hk.trip.com
+    flow: xtls-rprx-vision
+    reality-opts:
+      public-key: ""
+      short-id: "16"
+    client-fingerprint: chrome
+
+  - name: 002-美国洛杉矶
+    type: hysteria2
+    server:
+    port:
+    password:
+    # up: "30 Mbps"
+    # down: "200 Mbps"
+    sni: https://bing.com/
+    client-fingerprint: chrome
+    skip-cert-verify: true
+
+  - name: 005-香港
+    type: vless
+    server: 141.11.219.97
+    port: 801
+    uuid: 40a77e87-973b-5faf-a3e6-24b7373c789d
+    network: tcp
+    tls: true
+    udp: true
+    servername: hk.trip.com
+    flow: xtls-rprx-vision
+    reality-opts:
+      public-key: "oIhBJRR5SMYTgY0c4Da6FPSbVvpw9ERDeKapyrNU3X4"
+      short-id: "18"
+    client-fingerprint: chrome
+
+  - name: 006-香港
+    type: hysteria2
+    server: 141.11.219.97
+    port: 802
+    password: HySAm5SH9CARYMtdLghwcoWP
+    # up: "30 Mbps"
+    # down: "200 Mbps"
+    sni: https://bing.com/
+    client-fingerprint: chrome
+    skip-cert-verify: true
+
+  - name: 003-美国西雅图
+    type: vless
+    server:
+    port:
+    uuid: 
+    network: tcp
+    tls: true
+    udp: true
+    servername: hk.trip.com
+    flow: xtls-rprx-vision
+    reality-opts:
+      public-key: ""
+      short-id: "18"
+    client-fingerprint: chrome
+
+  - name: 004-美国西雅图
+    type: hysteria2
+    server:
+    port:
+    password:
+    # up: "30 Mbps"
+    # down: "200 Mbps"
+    sni: https://bing.com/
+    client-fingerprint: chrome
+    skip-cert-verify: true
+
+  # - name: "trojan节点"
+  #   type: trojan
+  #   server: bgroup.node4.t.nodelist-airport.com
+  #   port: 50001
+  #   udp: true
+  #   password: 2155145a-b1b5-443a-8977-670f6bd10f02
+  #   skip-cert-verify: true
+  
+proxy-groups:
+  # select 手动选择，该组在节点列表上，手动选择列表或者proxy-group
+  # url-test 延迟最低节点，测试该组所有节点的延迟
+  # fallback 回落，连接该组第一个节点，不可用时切换到下一个节点
+  # load-balance 负载均衡，由该组2个以上的节点提供链接
+  - name: 🚀 节点选择
+    type: select
+    proxies:
+      - 001-美国洛杉矶
+      - 002-美国洛杉矶
+      - 003-美国西雅图
+      - 004-美国西雅图
+      - 005-香港
+      - 006-香港
+
+      - DIRECT
+
+  # - name: 🚀 自动选择
+  #   type: url-test
+  #   url: https://cp.cloudflare.com/generate_204
+  #   url: http://www.gstatic.com/generate_204
+  #   proxies:
+  #     - 001-美国
+  #     - 002-美国
+  #     - 003-香港
+  #     - 004-香港
+
+rule-providers:
+  private:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt"
+    path: ./ruleset/private.yaml
+    interval: 86400
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
+    path: ./ruleset/cncidr.yaml
+    interval: 86400
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+    
+rules:
+  - DOMAIN,www.ghw9zwp5.com,DIRECT
+  - DOMAIN,tool.liumingye.cn,DIRECT
+  - RULE-SET,private,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - RULE-SET,cncidr,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,🚀 节点选择
