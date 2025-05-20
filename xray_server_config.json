@@ -1,0 +1,98 @@
+{
+  "log": {
+      "loglevel": "warning",
+      "access": "/var/log/xray/access.log",
+      "error": "/var/log/xray/error.log"
+  },
+
+  "dns": {
+      "servers": [
+        "https+local://cloudflare-dns.com/dns-query",
+        "1.1.1.1",
+        "8.8.8.8",
+        "localhost"
+      ]
+  },
+
+  "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "ip": [
+            "geoip:private"
+          ],
+          "outboundTag": "block"
+        },
+        {
+          "type": "field",
+          "ip": ["geoip:cn"],
+          "outboundTag": "block"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ads-all"
+          ],
+          "outboundTag": "block"
+        }
+      ]
+  },
+
+  "inbounds": [
+    {
+      "listen": "0.0.0.0",
+      "port": 801,
+      "protocol": "vless",
+      "settings": {
+          "clients": [
+               {
+                 "id": "391119",
+                 "flow": "xtls-rprx-vision"
+               }
+           ],
+           "decryption": "none"
+      },
+      "streamSettings": {
+            "network": "tcp",
+            "security": "reality",
+            "realitySettings": {
+                  "show": false,
+                  "dest": "hk.trip.com:443",
+                  "xver": 0,
+                  "serverNames": [
+                    "trip.com",
+                    "hk.trip.com"
+                  ],
+                  "privateKey": "OLL3LkCtLzgZ4AW4",
+                  "shortIds": [
+                    "16",
+                    "18",
+                    "a1",
+                    "1688",
+                    "88af20"
+                  ]
+            }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+
+    }
+  ],
+
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ]
+}
