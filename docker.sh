@@ -1,3 +1,4 @@
+# navidrome
 docker run -d  --name navidrome --restart=unless-stopped  \
 --user $(id -u):$(id -g)  -v /root/navidrome/music:/music   \
 -v /root/navidrome/data:/data  -p 4533:4533   \
