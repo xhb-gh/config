@@ -1,6 +1,11 @@
 #!/bin/bash
 
 set e
+if ps aux | grep -v grep | grep anytls; then
+  echo "AnyTLS 已在运行"
+  exit 1
+fi
+
 # 获取最新版本号
 latest_version=$(wget -qO- https://api.github.com/repos/anytls/anytls-go/releases/latest | jq -r .tag_name)
 
