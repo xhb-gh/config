@@ -24,7 +24,7 @@ unzip -o anytls.zip
 chmod +x anytls-server
 
 echo "AnyTLS $latest_version 下载完成。"
-rm -rf anytls-client readme.md
+rm -rf anytls-client readme.md anytls.zip
 
 random_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 8)
 nohup ./anytls-server -l 0.0.0.0:8443 -p "$random_pass" > /dev/null 2>&1 &
