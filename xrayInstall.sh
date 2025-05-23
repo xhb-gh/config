@@ -1,5 +1,11 @@
 #!/bin/bash
 
+set e
+if ps aux | grep -v grep | grep xray; then
+  echo "xray 已在运行"
+  exit 1
+fi
+
 apt-get update
 apt-get install -y jq
 
