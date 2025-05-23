@@ -1,5 +1,11 @@
 #!/bin/bash
 
+set e
+if ps aux | grep -v grep | grep hysteria; then
+  echo "Hysteria 已在运行"
+  exit 1
+fi
+
 bash <(curl -fsSL https://get.hy2.sh/)
 
 #生成自签名证书
