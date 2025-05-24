@@ -87,50 +87,108 @@ dns:
 proxies:
   - name: 001-美国洛杉矶
     type: vless
-    server:
-    port:
-    uuid:
+    server: 107.172.235.101
+    port: 801
+    uuid: bae4337a-0b61-472e-8288-fc8518c
     network: tcp
     tls: true
     udp: true
     servername: hk.trip.com
     flow: xtls-rprx-vision
     reality-opts:
-      public-key: ""
+      public-key: "cLVU5mic5rVWhHownFrmPkq5IzDW0NLnEdQkg"
       short-id: "16"
     client-fingerprint: chrome
 
   - name: 002-美国洛杉矶
     type: hysteria2
-    server:
-    port:
-    password:
+    server: 107.172.235.101
+    port: 802
+    password: HySAm5SH9CtdLghwcoWP
     # up: "30 Mbps"
     # down: "200 Mbps"
     sni: https://bing.com/
     client-fingerprint: chrome
     skip-cert-verify: true
 
-  - name: 005-香港
+  - name: 003-美国洛杉矶
+    type: anytls
+    server: 107.172.235.101
+    port: 8443
+    password: anytls321
+    client-fingerprint: chrome
+    udp: true
+    idle-session-check-interval: 30
+    idle-session-timeout: 30
+    min-idle-session: 0
+    sni: https://bing.com
+    alpn:
+      - h2
+      - http/1.1
+    skip-cert-verify: true
+
+  - name: 001-香港
     type: vless
-    server: 141.11.219.97
+    server: 103.96.74.62
     port: 801
-    uuid: 40a77e87-973b-5faf-a3e6-24b7373c789d
+    uuid: 2f03b547-387b-af37-8c199e8c539a
     network: tcp
     tls: true
     udp: true
     servername: hk.trip.com
     flow: xtls-rprx-vision
     reality-opts:
-      public-key: "oIhBJRR5SMYTgY0c4Da6FPSbVvpw9ERDeKapyrNU3X4"
+      public-key: "Tx0zPZDg5Ljo26qXD2ROLAsUJrCbsQRJR0Fw"
       short-id: "18"
     client-fingerprint: chrome
 
-  - name: 006-香港
+  - name: 002-香港
     type: hysteria2
-    server: 141.11.219.97
+    server: 103.96.74.62
     port: 802
-    password: HySAm5SH9CARYMtdLghwcoWP
+    password: jFr9JfuAayhQIvuV
+    # up: "30 Mbps"
+    # down: "200 Mbps"
+    sni: https://bing.com/
+    client-fingerprint: chrome
+    skip-cert-verify: true
+
+  - name: 003-香港
+    type: anytls
+    server: 103.96.74.62
+    port: 8443
+    password: gwFDEjnx
+    client-fingerprint: chrome
+    udp: true
+    idle-session-check-interval: 30
+    idle-session-timeout: 30
+    min-idle-session: 0
+    sni: https://bing.com
+    alpn:
+      - h2
+      - http/1.1
+    skip-cert-verify: true
+
+  - name: 001-美国西雅图
+    type: vless
+    server: 107.172.219.150
+    port: 801
+    uuid: 39155912-1f05-43c5-a1eb-146fdc119
+    network: tcp
+    tls: true
+    udp: true
+    servername: hk.trip.com
+    flow: xtls-rprx-vision
+    reality-opts:
+      public-key: "oJI1guLxspJ4oHCN1Ugmo-c8ReI1YquqC9BDY"
+      short-id: "18"
+    client-fingerprint: chrome
+
+  - name: 002-美国西雅图
+    type: hysteria2
+    server: 107.172.219.150
+    port: 802
+    password: HySAm5SH9CARYMtdLgh
     # up: "30 Mbps"
     # down: "200 Mbps"
     sni: https://bing.com/
@@ -138,29 +196,19 @@ proxies:
     skip-cert-verify: true
 
   - name: 003-美国西雅图
-    type: vless
-    server:
-    port:
-    uuid: 
-    network: tcp
-    tls: true
+    type: anytls
+    server: 107.172.219.150
+    port: 8443
+    password: zN16fy
+    client-fingerprint: chrome
     udp: true
-    servername: hk.trip.com
-    flow: xtls-rprx-vision
-    reality-opts:
-      public-key: ""
-      short-id: "18"
-    client-fingerprint: chrome
-
-  - name: 004-美国西雅图
-    type: hysteria2
-    server:
-    port:
-    password:
-    # up: "30 Mbps"
-    # down: "200 Mbps"
-    sni: https://bing.com/
-    client-fingerprint: chrome
+    idle-session-check-interval: 30
+    idle-session-timeout: 30
+    min-idle-session: 0
+    sni: https://bing.com
+    alpn:
+      - h2
+      - http/1.1
     skip-cert-verify: true
 
   # - name: "trojan节点"
@@ -181,10 +229,13 @@ proxy-groups:
     proxies:
       - 001-美国洛杉矶
       - 002-美国洛杉矶
+      - 003-美国洛杉矶
+      - 001-美国西雅图
+      - 002-美国西雅图
       - 003-美国西雅图
-      - 004-美国西雅图
-      - 005-香港
-      - 006-香港
+      - 001-香港
+      - 002-香港
+      - 003-香港
 
       - DIRECT
 
