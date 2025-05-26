@@ -1,11 +1,6 @@
 #!/bin/bash
 
-set e
-if ps aux | grep -v grep | grep anytls; then
-  echo "AnyTLS 已在运行"
-  exit 1
-fi
-
+set -e
 # 获取最新版本号
 latest_version=$(wget -qO- https://api.github.com/repos/anytls/anytls-go/releases/latest | jq -r .tag_name)
 
@@ -29,5 +24,7 @@ rm -rf anytls-client readme.md anytls.zip
 random_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 8)
 nohup ./anytls-server -l 0.0.0.0:8443 -p "$random_pass" > /dev/null 2>&1 &
 
-echo "监听地址：0.0.0.0:8443"
-echo "随机密码：$random_pass"
+printf "\n"
+echo "anytls 监听地址：0.0.0.0:8443"
+echo "anytls 随机密码：$random_pass"
+printf "\n"
