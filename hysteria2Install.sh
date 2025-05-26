@@ -39,8 +39,8 @@ printf "\n"
 grep --color=always -E "^(.*)$" /etc/hysteria/config.yaml
 printf "\n"
 
-systemctl start hysteria-server.service
-systemctl enable hysteria-server.service  # 设置开机自启
-systemctl status hysteria-server.service
-#systemctl restart hysteria-server.service
+systemctl start hysteria-server
+systemctl enable hysteria-server  # 设置开机自启
+systemctl status hysteria-server
+#systemctl restart hysteria-server
 #systemctl is-active nginx
