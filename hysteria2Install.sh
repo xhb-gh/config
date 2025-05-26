@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set e
+set -e
 if ps aux | grep -v grep | grep hysteria; then
   echo "Hysteria 已在运行"
   exit 1
@@ -14,8 +14,8 @@ openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) -keyout 
 
 PW=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20)
 
-echo "修改配置文件"
-echo "/etc/hysteria/config.yaml"
+
+echo "修改配置文件 /etc/hysteria/config.yaml"
 cat << EOF > /etc/hysteria/config.yaml
 listen: :802
 
@@ -33,7 +33,11 @@ masquerade:
     url: https://bing.com/
     rewriteHost: true
 EOF
-cat /etc/hysteria/config.yaml
+
+# 带颜色显示配置文件 /etc/hysteria/config.yaml
+printf "\n"
+grep --color=always -E "^(.*)$" /etc/hysteria/config.yaml
+printf "\n"
 
 systemctl start hysteria-server.service
 systemctl enable hysteria-server.service  # 设置开机自启
